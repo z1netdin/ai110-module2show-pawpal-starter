@@ -66,6 +66,21 @@ The AI flagged that `Pet` had an `owner` back-reference attribute and suggested 
 
 To verify the actual logic worked (not just trusted it), I ran real test commands myself: a quick script creating pets/tasks and checking the printed plan was in the right order, and a specific test where a pee-break task and a same-priority meal task were added in the *wrong* order on purpose, to prove the `depends_on` rule still forced the correct order. I also ran the full `pytest` suite after each change to make sure nothing broke.
 
+**c. AI Strategy**
+
+- Which AI coding assistant features were most effective for building your scheduler?
+- Give one example of an AI suggestion you rejected or modified to keep your system design clean.
+- How did using separate chat sessions for different phases help you stay organized?
+- Summarize what you learned about being the "lead architect" when collaborating with powerful AI tools.
+
+The most effective thing was not really one "feature," it was asking it to review code I already wrote and point out problems *before* I kept building on top of it (like the skeleton review that caught the duplicate `available_time` param and the missing task ID). Having it run my own test scripts and the `pytest` suite after every change was also huge, that's how I actually knew the dependency-ordering fix worked instead of just trusting the explanation.
+
+One suggestion I rejected: when I asked it to simplify one of my scheduling methods, it offered a more "Pythonic" rewrite using a heap and proper topological sort, technically faster, but much harder to read. I kept my simpler, slower while-loop version instead, because a pet owner's task list is tiny (maybe 10-20 tasks), so the performance win was pointless, and the simpler version is something I can actually read again in six months.
+
+Keeping each request focused on one phase (design, then skeleton, then logic, then testing, then UI) instead of asking for everything at once made a real difference. When a request was scoped to just "write tests for these 3 behaviors," the suggestions stayed relevant to that, instead of me getting a pile of unrelated changes mixed in with what I actually asked for.
+
+What I learned about being the "lead architect": the AI is good at generating options and catching things I missed, but it does not know what tradeoffs actually matter for *my* app. It was my job to decide things like "do I need a `Pet.owner` back-reference," "is the readable version worth more than the fast version here," and "is 3 stars or 5 stars actually honest." If I just accepted every suggestion without checking it against what I actually understood about the project, I would've ended up with code that technically worked but that I couldn't explain or maintain myself.
+
 ---
 
 ## 4. Testing and Verification

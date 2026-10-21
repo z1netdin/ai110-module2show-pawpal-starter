@@ -1,0 +1,51 @@
+classDiagram
+    class Task {
+        +int id
+        +string title
+        +int duration_minutes
+        +string priority
+        +Pet pet
+        +string recurrence
+        +string start_time
+        +bool completed
+        +Task depends_on
+        +date last_completed_on
+        +date due_date
+        +mark_done(today) Task
+        -_spawn_next_occurrence(today) Task
+    }
+
+    class Pet {
+        +string name
+        +string species
+        +list~Task~ tasks
+        +add_task(task) void
+        +remove_task(task) void
+        +get_tasks() list~Task~
+    }
+
+    class Owner {
+        +string name
+        +list~Pet~ pets
+        +add_pet(pet) void
+        +get_pet(name) Pet
+        +get_all_tasks() list~Task~
+        +filter_tasks(pet_name, completed) list~Task~
+        +get_tasks_by_pet(pet_name) list~Task~
+    }
+
+    class Scheduler {
+        +int available_time_minutes
+        +generate_plan(owner) list~Task~
+        +detect_conflicts(owner) list~string~
+        +sort_by_duration(tasks, descending) list~Task~
+        +sort_by_time(tasks) list~Task~
+        +explain_choice(task) string
+        -_order_by_priority_and_dependencies(tasks) list~Task~
+    }
+
+    Owner "1" --> "*" Pet : has
+    Pet "1" --> "*" Task : has
+    Task "0..1" --> "0..1" Task : depends on
+    Scheduler ..> Owner : reads tasks from
+    Scheduler ..> Task : produces a plan of
