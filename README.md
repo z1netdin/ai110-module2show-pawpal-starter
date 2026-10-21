@@ -71,16 +71,26 @@ Note the ordering rules baked into this routine: pee break always happens right 
 
 ```bash
 # Run the full test suite:
-pytest
+python -m pytest
 
 # Run with coverage:
-pytest --cov
+python -m pytest --cov
 ```
 
-Sample test output:
+`tests/test_pawpal.py` covers 5 core behaviors: marking a task done, adding a task to a pet, sorting tasks chronologically by `start_time`, a daily task spawning its next occurrence via `mark_done()`, and the scheduler flagging two tasks booked at the same time.
+
+Sample test output (`python -m pytest`):
 
 ```
-# Paste your pytest output here
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\Orange\Documents\GitHub\ai110-module2show-pawpal-starter
+plugins: anyio-4.13.0
+collected 5 items
+
+tests\test_pawpal.py .....                                               [100%]
+
+============================== 5 passed in 0.01s ==============================
 ```
 
 ## 📐 Smarter Scheduling

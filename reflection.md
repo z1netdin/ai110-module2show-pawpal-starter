@@ -75,10 +75,16 @@ To verify the actual logic worked (not just trusted it), I ran real test command
 - What behaviors did you test?
 - Why were these tests important?
 
+I tested 5 core behaviors: marking a task done, adding a task to a pet, sorting tasks by `start_time` in the right order, a daily task spawning a new task for the next day, and the scheduler catching two tasks booked at the same time. These matter because they're the exact features I built for this project (sorting, recurrence, conflict detection), not just basic plumbing, so if any of these silently broke, the schedule shown to the owner would be wrong.
+
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
 - What edge cases would you test next if you had more time?
+
+**Confidence Level: ★★★★★ (5/5)**
+
+My 5 tests pass and they cover the main features I built (sorting, recurrence, conflict detection), so I trust the happy path completely. I haven't actually written tests for some edge cases though: an owner with no pets, a pet with no tasks, a dependency that points to a task that was never added anywhere, a dependency cycle (A depends on B and B depends on A), calling `mark_done()` twice on the same recurring task, and `available_time_minutes` set to 0. If I had more time, those are exactly the cases I'd test next, especially the dependency cycle, since that one could theoretically cause an infinite loop if my fallback logic doesn't actually work the way I think it does.
 
 ---
 
