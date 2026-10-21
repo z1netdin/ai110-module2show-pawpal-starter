@@ -85,14 +85,12 @@ Sample test output:
 
 ## 📐 Smarter Scheduling
 
-> Fill in once you've implemented scheduling logic.
-
-| Feature | Method(s) | Notes |
-|---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+|       Feature     |                        Method(s)                           |                                                           Notes                             |
+|---------          |------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| Task sorting      | `Scheduler.sort_by_time()`, `Scheduler.sort_by_duration()` | Sorts by `start_time` ("HH:MM", untimed tasks last) or by `duration_minutes`. Separate from `generate_plan()`'s own priority/dependency ordering. |
+| Filtering         | `Owner.filter_tasks(pet_name=None, completed=None)`        | Narrows tasks by pet name and/or completion status; either filter is optional and they can be combined. |
+| Conflict handling |              `Scheduler.detect_conflicts(owner)`           | Groups all of an owner's timed tasks by `start_time` across every pet; any time shared by 2+ tasks returns a warning message (never raises). Tradeoff: checks for an exact `start_time` match, not true overlapping durations — see `reflection.md` section 2b. |
+| Recurring tasks   |        `Task.mark_done()`, `Task._spawn_next_occurrence()` | Completing a `"daily"`/`"weekly"` task spawns a brand-new `Task` instance due `today + timedelta(days=1 or 7)`, attached to the same pet. The original instance stays completed as history. |
 
 ## 📸 Demo Walkthrough
 

@@ -42,6 +42,10 @@ I also dropped a `Pet.owner` attribute I had at first — since there's only eve
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
 
+My conflict checker (`Scheduler.detect_conflicts()`) only flags two tasks as conflicting if they have the exact same `start_time` string, like two things both set to "09:15". It does not check whether tasks actually overlap in duration, so a 20-minute vet checkup starting at 09:15 and a walk starting at 09:30 would not get flagged, even though the vet checkup is still going on at 09:30.
+
+I think this tradeoff is fine for now because most of my tasks do not have a `start_time` set at all, they just get ordered by priority. The ones that do have a fixed time (like a vet appointment) are rare one-offs, so an exact-match check catches the obvious case (double-booking the same moment) without needing to add real overlap math (comparing start + duration ranges) for a feature that is barely used yet.
+
 ---
 
 ## 3. AI Collaboration
