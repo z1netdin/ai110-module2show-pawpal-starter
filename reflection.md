@@ -7,6 +7,14 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+For my first design I thought about the 3 main things a user needs to do, and gave each one its own class:
+
+1. **Add a task.** I made a `Task` class for this. It just holds the info for one task: title, how long it takes (minutes), priority, and which pet it is for. The `Owner`/`Pet` class keeps the list of tasks and lets the user add new ones or edit them. This is basically the "Add task" form part.
+2. **Make the schedule.** This is the job of the `Scheduler` class. It takes all the tasks plus the constraints (how much time there is, priority, what the owner prefers) and turns that into an ordered plan for the day. This is where the real logic is, deciding what fits and in what order.
+3. **See today's plan.** Once the `Scheduler` makes the plan, it gets shown back to the user so they can see the tasks for today and why they were put in that order.
+
+I split it this way so the UI part (`app.py`) does not need to know how the schedule is actually built, it just asks the `Scheduler` for the plan and shows it.
+
 **b. Design changes**
 
 - Did your design change during implementation?

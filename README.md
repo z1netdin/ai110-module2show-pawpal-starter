@@ -47,12 +47,18 @@ pip install -r requirements.txt
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
 
 ```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
+Daily plan for Bella:
+  07:00 — Pee break (outside) (5 min) [priority: high]
+  07:10 — Breakfast (10 min) [priority: high]
+  08:00 — Morning walk (30 min) [priority: medium]
+  17:00 — Evening walk (30 min) [priority: medium]
+  17:35 — Snack (5 min) [priority: medium]
+  18:30 — Pee break (outside) (5 min) [priority: high]
+  18:40 — Dinner (10 min) [priority: high]
+  22:00 — Pee break before sleep (5 min) [priority: high]
 ```
+
+Note the ordering rules baked into this routine: pee break always happens right before a meal, and the snack comes right after the evening walk but dinner is deliberately later rather than back-to-back.
 
 ## 🧪 Testing PawPal+
 
