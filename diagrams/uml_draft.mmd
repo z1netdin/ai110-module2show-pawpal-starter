@@ -16,18 +16,22 @@ classDiagram
     }
 
     class Task {
+        +int id
         +string title
         +int duration_minutes
         +string priority
         +Pet pet
         +string recurrence
         +bool completed
+        +Task depends_on
         +mark_done() void
     }
 
+    Task "0..1" --> "0..1" Task : depends on
+
     class Scheduler {
         +int available_time_minutes
-        +generate_plan(tasks, available_time) list~Task~
+        +generate_plan(tasks) list~Task~
         +explain_choice(task) string
     }
 

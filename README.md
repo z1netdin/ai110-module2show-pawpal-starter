@@ -22,6 +22,17 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Implementation Summary
+
+The backend logic lives in `pawpal_system.py`, with four classes:
+
+- **`Task`** — a single care activity (title, duration, priority, optional recurrence, completed flag, and an auto-generated `id`). A `Task` can also point to another task via `depends_on`, so one task can be required to happen before another (e.g. a pee break before a meal).
+- **`Pet`** — holds a pet's basic info and its list of `Task`s. `add_task()`/`remove_task()` keep the task's back-link to its pet in sync.
+- **`Owner`** — holds a list of `Pet`s and exposes `get_all_tasks()`, which flattens every pet's tasks into one list. This is what lets the system support multiple pets.
+- **`Scheduler`** — the planning logic. `generate_plan(owner)` pulls tasks from `owner.get_all_tasks()` (never from a single pet directly), orders them by priority while respecting any `depends_on` constraints, then greedily fits as many as it can into `available_time_minutes`. `explain_choice(task)` gives a one-line reason for each task.
+
+`Task` and `Pet` are implemented as Python dataclasses since they're mostly data; `Owner` and `Scheduler` are regular classes since they do more active work. `main.py` is a small terminal script that wires these classes together and prints the resulting schedule — it's the easiest way to see the logic run without the Streamlit UI. `app.py` is still just the UI shell from the starter template and isn't yet connected to this logic.
+
 ## Getting started
 
 ### Setup
@@ -44,18 +55,14 @@ pip install -r requirements.txt
 
 ## 🖥️ Sample Output
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+Terminal output from running `python main.py`:
 
 ```
-Daily plan for Bella:
-  07:00 — Pee break (outside) (5 min) [priority: high]
-  07:10 — Breakfast (10 min) [priority: high]
-  08:00 — Morning walk (30 min) [priority: medium]
-  17:00 — Evening walk (30 min) [priority: medium]
-  17:35 — Snack (5 min) [priority: medium]
-  18:30 — Pee break (outside) (5 min) [priority: high]
-  18:40 — Dinner (10 min) [priority: high]
-  22:00 — Pee break before sleep (5 min) [priority: high]
+Today's Schedule
+------------------------------
+[Sohpia] Pee break - 5 min (priority: high)
+[Milo] Feeding - 10 min (priority: high)
+[Sohpia] Morning walk - 30 min (priority: medium)
 ```
 
 Note the ordering rules baked into this routine: pee break always happens right before a meal, and the snack comes right after the evening walk but dinner is deliberately later rather than back-to-back.
